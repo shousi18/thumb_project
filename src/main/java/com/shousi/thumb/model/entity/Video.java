@@ -25,6 +25,11 @@ public class Video implements Serializable {
     private Long thumbCount;
 
     /**
+     * 创建人id
+     */
+    private Long createId;
+
+    /**
      * 创建时间
      */
     private Date createTime;

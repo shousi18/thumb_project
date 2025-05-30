@@ -5,15 +5,17 @@
 <mapper namespace="com.shousi.thumb.mapper.VideoMapper">
 
     <resultMap id="BaseResultMap" type="com.shousi.thumb.model.entity.Video">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="thumbCount" column="thumb_count" jdbcType="BIGINT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="thumbCount" column="thumb_count" jdbcType="BIGINT"/>
+        <result property="createId" column="create_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,thumb_count,create_time,
+        id
+        ,thumb_count,create_time,
         update_time,is_delete
     </sql>
 </mapper>
