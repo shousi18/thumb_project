@@ -74,7 +74,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public UserVO getLoginUser(HttpServletRequest request) {
-        return objToVO((User) request.getSession().getAttribute("user"));
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            throw new RuntimeException("未登录");
+        }
+        return objToVO(user);
     }
 
     @Override
