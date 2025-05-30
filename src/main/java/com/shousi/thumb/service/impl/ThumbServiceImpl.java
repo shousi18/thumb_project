@@ -8,7 +8,9 @@ import com.shousi.thumb.model.entity.Thumb;
 import com.shousi.thumb.model.entity.Video;
 import com.shousi.thumb.model.vo.UserVO;
 import com.shousi.thumb.service.ThumbService;
+import com.shousi.thumb.utils.RedisKeyUtil;
 import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,6 +27,9 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
 
     @Resource
     private ThumbMapper thumbMapper;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public boolean doThumb(Long videoId, UserVO loginUser) {
@@ -56,7 +61,8 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
             // todo 可以不进行报错，点赞数据可以后期补偿
             throw new RuntimeException("网络问题，点赞失败");
         }
-        // todo 存入Redis进行缓存
+        // 存入Redis进行缓存
+        redisTemplate.opsForHash().put(RedisKeyUtil.getUserThumbKey(userId), videoId.toString(), true);
         return true;
     }
 
@@ -90,6 +96,8 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
         if (update != 1) {
             throw new RuntimeException("网络问题，取消点赞失败");
         }
+        // 删除Redis缓存
+        redisTemplate.opsForHash().delete(RedisKeyUtil.getUserThumbKey(userId), videoId.toString());
         return true;
     }
 
@@ -104,7 +112,14 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
         if (userId == null || userId <= 0) {
             throw new RuntimeException("用户不存在");
         }
-        // todo 可以先查缓存，再查数据库
+        // 可以先查缓存，再查数据库
+        String userThumbKey = RedisKeyUtil.getUserThumbKey(userId);
+        // 查询该用户是否点赞了该视频
+        Object obj = redisTemplate.opsForHash().get(userThumbKey, videoId.toString());
+        if (obj != null) {
+            return true;
+        }
+        // 查询数据库
         LambdaQueryWrapper<Thumb> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Thumb::getVideoId, videoId);
         queryWrapper.eq(Thumb::getUserId, userId);
@@ -113,6 +128,8 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
             // 用户未点赞
             return false;
         }
+        // 用户点过赞，存入到redis中
+        redisTemplate.opsForHash().put(userThumbKey, videoId.toString(), true);
         return true;
     }
 }
