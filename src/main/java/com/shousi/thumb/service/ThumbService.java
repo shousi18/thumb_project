@@ -2,6 +2,7 @@ package com.shousi.thumb.service;
 
 import com.shousi.thumb.model.entity.Thumb;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.shousi.thumb.model.vo.UserVO;
 
 /**
 * @author 86172
@@ -10,4 +11,29 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ThumbService extends IService<Thumb> {
 
+    /**
+     * 点赞
+     *
+     * @param videoId
+     * @param loginUser
+     * @return
+     */
+    boolean doThumb(Long videoId, UserVO loginUser);
+
+    /**
+     * 取消点赞
+     * @param videoId
+     * @param loginUser
+     * @return
+     */
+    boolean undoThumb(Long videoId, UserVO loginUser);
+
+    /**
+     * 判断当前用户是否点赞
+     *
+     * @param videoId
+     * @param request
+     * @return
+     */
+    boolean isThumb(Long videoId, UserVO request);
 }
