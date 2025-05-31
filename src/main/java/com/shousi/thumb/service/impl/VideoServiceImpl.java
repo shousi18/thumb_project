@@ -3,7 +3,6 @@ package com.shousi.thumb.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shousi.thumb.mapper.VideoMapper;
-import com.shousi.thumb.model.dto.video.QueryVideoCountRequest;
 import com.shousi.thumb.model.entity.Video;
 import com.shousi.thumb.model.vo.UserVO;
 import com.shousi.thumb.service.VideoService;
@@ -34,8 +33,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
     }
 
     @Override
-    public Long queryVideoCount(QueryVideoCountRequest queryVideoCountRequest) {
-        Long videoId = queryVideoCountRequest.getVideoId();
+    public Long queryVideoCount(Long videoId) {
         LambdaQueryWrapper<Video> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Video::getId, videoId);
         Video video = videoMapper.selectOne(queryWrapper);

@@ -32,6 +32,6 @@ public class VideoController {
         if (queryVideoCountRequest == null || queryVideoCountRequest.getVideoId() == null || queryVideoCountRequest.getVideoId() <= 0) {
             throw new RuntimeException("参数错误");
         }
-        return videoService.queryVideoCount(queryVideoCountRequest);
+        return videoService.queryVideoCount(queryVideoCountRequest.getVideoId());
     }
 }

@@ -1,6 +1,5 @@
 package com.shousi.thumb.service;
 
-import com.shousi.thumb.model.dto.video.QueryVideoCountRequest;
 import com.shousi.thumb.model.entity.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shousi.thumb.model.vo.UserVO;
@@ -20,8 +19,8 @@ public interface VideoService extends IService<Video> {
 
     /**
      * 查询视频点赞数量
-     * @param queryVideoCountRequest
+     * @param videoId
      * @return
      */
-    Long queryVideoCount(QueryVideoCountRequest queryVideoCountRequest);
+    Long queryVideoCount(Long videoId);
 }
