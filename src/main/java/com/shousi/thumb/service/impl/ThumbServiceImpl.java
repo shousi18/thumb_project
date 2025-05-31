@@ -1,6 +1,7 @@
 package com.shousi.thumb.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shousi.thumb.mapper.ThumbMapper;
 import com.shousi.thumb.mapper.VideoMapper;
@@ -55,8 +56,10 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
             throw new RuntimeException("网络问题，点赞失败");
         }
         // 更新视频点赞数
-        video.setThumbCount(video.getThumbCount() + 1);
-        int update = videoMapper.updateById(video);
+        LambdaUpdateWrapper<Video> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Video::getId, videoId);
+        wrapper.setSql("thumb_count = thumb_count + 1");
+        int update = videoMapper.update(wrapper);
         if (update != 1) {
             // todo 可以不进行报错，点赞数据可以后期补偿
             throw new RuntimeException("网络问题，点赞失败");
@@ -91,8 +94,10 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
             throw new RuntimeException("网络问题，取消点赞失败");
         }
         // 更新视频点赞数
-        video.setThumbCount(video.getThumbCount() - 1);
-        int update = videoMapper.updateById(video);
+        LambdaUpdateWrapper<Video> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Video::getId, videoId);
+        wrapper.setSql("thumb_count = thumb_count - 1");
+        int update = videoMapper.update(wrapper);
         if (update != 1) {
             throw new RuntimeException("网络问题，取消点赞失败");
         }

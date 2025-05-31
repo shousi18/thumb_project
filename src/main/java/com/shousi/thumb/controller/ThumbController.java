@@ -8,6 +8,8 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/thumb")
 public class ThumbController {
@@ -21,7 +23,7 @@ public class ThumbController {
     @PostMapping("/dothumb")
     public boolean doThumb(@RequestBody DoThumbRequest doThumbRequest, HttpServletRequest request) {
         // 参数校验
-        if (doThumbRequest == null || doThumbRequest.getVideoId() == null || doThumbRequest.getVideoId() <= 0) {
+        if (Objects.isNull(doThumbRequest) || doThumbRequest.getVideoId() == null || doThumbRequest.getVideoId() <= 0) {
             throw new RuntimeException("参数错误");
         }
         // 获取当前登录用户
@@ -32,7 +34,7 @@ public class ThumbController {
     @PostMapping("/undothumb")
     public boolean undoThumb(@RequestBody DoThumbRequest doThumbRequest, HttpServletRequest request) {
         // 参数校验
-        if (doThumbRequest == null || doThumbRequest.getVideoId() == null || doThumbRequest.getVideoId() <= 0) {
+        if (Objects.isNull(doThumbRequest) || doThumbRequest.getVideoId() == null || doThumbRequest.getVideoId() <= 0) {
             throw new RuntimeException("参数错误");
         }
         // 获取当前登录用户
@@ -42,7 +44,7 @@ public class ThumbController {
 
     @PostMapping("/isThumb")
     public boolean isThumb(@RequestBody DoThumbRequest doThumbRequest, HttpServletRequest request) {
-        if (doThumbRequest == null || doThumbRequest.getVideoId() == null || doThumbRequest.getVideoId() <= 0) {
+        if (Objects.isNull(doThumbRequest) || doThumbRequest.getVideoId() == null || doThumbRequest.getVideoId() <= 0) {
             throw new RuntimeException("参数错误");
         }
         UserVO loginUser = userService.getLoginUser(request);
