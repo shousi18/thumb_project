@@ -1,15 +1,17 @@
 package com.shousi.thumb.controller;
 
 import com.shousi.thumb.model.dto.video.QueryVideoCountRequest;
+import com.shousi.thumb.model.entity.Video;
 import com.shousi.thumb.model.vo.UserVO;
+import com.shousi.thumb.model.vo.VideoVO;
 import com.shousi.thumb.service.UserService;
 import com.shousi.thumb.service.VideoService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/video")
@@ -33,5 +35,11 @@ public class VideoController {
             throw new RuntimeException("参数错误");
         }
         return videoService.queryVideoCount(queryVideoCountRequest.getVideoId());
+    }
+
+    @GetMapping("/getTop")
+    public List<VideoVO> getTop() {
+        int size = 10;
+        return videoService.getTop(size);
     }
 }

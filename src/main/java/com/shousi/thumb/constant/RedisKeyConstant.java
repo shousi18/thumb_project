@@ -5,4 +5,5 @@ package com.shousi.thumb.constant;
  */
 public interface RedisKeyConstant {
     String USER_THUMB_KEY = "user:thumb:";
+    String VIDEO_TOP_KEY = "video";
 }
